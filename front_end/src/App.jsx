@@ -10,8 +10,9 @@ function TodoContainer(){
   const [currentTitle, setCurrentTitle] = useState("")
   const [currentDescription, setCurrentDescription] = useState("")
 
-  const addTodo = () => {
-    fetch(import.meta.env.VITE_URL + "/todos",{
+  const addTodo = async () => {
+    console.log(import.meta.env.VITE_URL + "/todos")
+    const response = await fetch(import.meta.env.VITE_URL + "/todos",{
       method: "post",
       body: JSON.stringify({
         title: currentTitle,
@@ -19,14 +20,16 @@ function TodoContainer(){
       }),
       headers: { "Content-Type": "application/json; charset=UTF-8" }
     })
-    setTodos([...todos, {title: currentTitle, description: currentDescription}])
+    console.log(response.body)
+    if(todos == null || todos.length === 0) setTodos([{title: currentTitle, description: currentDescription}])
+    else setTodos([...todos, {title: currentTitle, description: currentDescription}])
   }
 
   useEffect(() => {
     (async () => {
       const res = await fetch(import.meta.env.VITE_URL+"/todos")
       const data = await res.json()
-      setTodos(data)
+      setTodos(data.todos)
     })();
   }, [])
 
@@ -55,7 +58,7 @@ function TodoPresentation(props){
       <input type="text" name="description" onChange={(e) => props.setCurrentDescription(e.target.value)}/>
       <input type="button" value="add todo" onClick={props.addTodo}/>
 
-      {props.todos.map((todo) => {
+      {props.todos && props.todos.map((todo) => {
         return <>
           <div className="todo">
             <div className="title">{todo.title}</div>

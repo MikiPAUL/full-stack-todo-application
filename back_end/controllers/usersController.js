@@ -11,7 +11,7 @@ const profile = async (req, res) => {
         }).status(200)
     }
     catch(err){
-        console.log(err)
+        res.status(422).json({ error: err})
     }
 }
 

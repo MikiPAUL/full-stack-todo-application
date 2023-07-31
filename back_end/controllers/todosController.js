@@ -113,7 +113,7 @@ const destroy = async (req, res) => {
         res.status(200).json({ status: "Successfully deleted" })
     }
     catch(err){
-        res.json({ message: err.message, stack: err.stack })
+        res.status(422).json({ message: err.message, stack: err.stack })
     }
 }
 

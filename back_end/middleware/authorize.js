@@ -9,11 +9,12 @@ const authorize = (req, res , next) => {
         const token = req.headers[tokenHeader]
 
         const verified = jwt.verify(token, secretKey)
+
         if(verified) next()
         else throw new Error("Not allowed")
     }
     catch(err){
-        res.json({ error: err}).status(422)
+        res.status(401).json({ error: err })
     }
 }
 
