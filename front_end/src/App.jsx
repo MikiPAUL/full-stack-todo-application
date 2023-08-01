@@ -1,75 +1,17 @@
-import { useEffect, useState } from "react";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Login from './Components/Login';
 
-function App(){
-  return <TodoContainer></TodoContainer>
-  
-}
-
-function TodoContainer(){
-  const [todos, setTodos] = useState([])
-  const [currentTitle, setCurrentTitle] = useState("")
-  const [currentDescription, setCurrentDescription] = useState("")
-
-  const addTodo = async () => {
-    console.log(import.meta.env.VITE_URL + "/todos")
-    const response = await fetch(import.meta.env.VITE_URL + "/todos",{
-      method: "post",
-      body: JSON.stringify({
-        title: currentTitle,
-        description: currentDescription
-      }),
-      headers: { "Content-Type": "application/json; charset=UTF-8" }
-    })
-    console.log(response.body)
-    if(todos == null || todos.length === 0) setTodos([{title: currentTitle, description: currentDescription}])
-    else setTodos([...todos, {title: currentTitle, description: currentDescription}])
-  }
-
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(import.meta.env.VITE_URL+"/todos")
-      const data = await res.json()
-      setTodos(data.todos)
-    })();
-  }, [])
-
-  const deleteTodo = (e, title) => {
-    const removeTodoList = todos.filter((todo) => {
-      return todo.title !== title
-    })
-    setTodos(removeTodoList)
-  }
-
-  return <TodoPresentation 
-            todos={todos} 
-            setCurrentTitle={setCurrentTitle} 
-            setCurrentDescription={setCurrentDescription}
-            addTodo={addTodo}
-            deleteTodo={deleteTodo}
-          >
-
-          </TodoPresentation>
-}
-
-function TodoPresentation(props){
+const App = () => {
   return (
-    <>
-      <input type="text" name="title" onChange={(e) => props.setCurrentTitle(e.target.value)}/>
-      <input type="text" name="description" onChange={(e) => props.setCurrentDescription(e.target.value)}/>
-      <input type="button" value="add todo" onClick={props.addTodo}/>
-
-      {props.todos && props.todos.map((todo) => {
-        return <>
-          <div className="todo">
-            <div className="title">{todo.title}</div>
-            <div className="description">{todo.description}</div>
-            <button className="delete-btn" onClick={(e) => props.deleteTodo(e, todo.title)}>delete</button>
-          </div>
-        </>
-        })
-      }
-    </>
+      <Router>
+        <Routes>
+          <Route>
+            <Route path='/login' element= { <Login/> }/>
+          </Route>
+        </Routes>
+      </Router>
   )
 }
 
-export default App
+export default App;

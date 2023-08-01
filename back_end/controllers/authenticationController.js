@@ -47,18 +47,18 @@ const signIn = async (req, res) => {
     try{
         const sanitizeSignInParams = signInParams.safeParse(req.body)
 
-        if(!sanitizeSignInParams.success) return res.json({ error: sanitizeSignInParams.error }).status(422)
+        if(!sanitizeSignInParams.success) return res.status(401).json({ error: sanitizeSignInParams.error })
 
         const user = await User.findOne({ ...sanitizeSignInParams.data.user })
 
         if(!user) throw new Error("Unable to find the user")
 
         const token = generateToken(user._id)
-        res.json({
+        res.status(200).json({
             status: "Successfully signIn",
             ...token,
 
-        }).status(201)
+        })
     }   
     catch(err){
         res.status(422).json( { message: err.message, stack: err.stack } )
