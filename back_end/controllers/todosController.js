@@ -51,7 +51,7 @@ const create = async (req, res) => {
         const user = await User.findById(id)
         const sanitizeParams = createTodoParams.safeParse(req.body)
         
-        if(!sanitizeParams.success) return res.json({ error: sanitizeParams.error }).status(422)
+        if(!sanitizeParams.success) return res.status(422).json({ error: sanitizeParams.error })
     
 
         const todo = await Todo.create({ ...sanitizeParams.data.todo, user: id })
@@ -97,10 +97,10 @@ const update = async (req, res) => {
     try{
         const sanitizeParams = updateTodoParams.safeParse(req.body)
         
-        if(!sanitizeParams.success) return res.json({ error: sanitizeParams.error }).status(422)
+        if(!sanitizeParams.success) return res.status(422).json({ error: sanitizeParams.error })
 
         const todo = await Todo.findByIdAndUpdate(req.params.id, {...sanitizeParams.data.todo}, {new: true})
-        res.status(200).json({ status: todo})
+        res.status(200).json({ todo })
     }
     catch(err){
         res.status(422).json({ message: err.message, stack: err.stack })

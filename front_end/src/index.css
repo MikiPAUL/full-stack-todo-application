@@ -15,11 +15,8 @@
 }
 
 #root{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 body{
@@ -29,4 +26,3 @@ body{
   background-color: RGB(220, 221, 225);
   color: RGB(55, 57, 69);
 }
-

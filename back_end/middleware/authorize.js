@@ -7,7 +7,6 @@ const authorize = (req, res , next) => {
 
     try {
         const token = req.headers[tokenHeader]
-
         const verified = jwt.verify(token, secretKey)
 
         if(verified) next()
